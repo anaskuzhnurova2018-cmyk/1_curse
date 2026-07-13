@@ -1,0 +1,37 @@
+package Int_Byte.objectTo;
+
+import java.io.*;
+
+//чтобы сохранить какое-то состояние, используем этот класс (это типа слепок оперативной памяти)
+//если нужно передать инфу, то можем провести сериализацию и передать через инте наш класс
+//проблемы: сильно завязана на версии java
+
+public class MainSerializeBuffer {
+    public static void main(String[] args) {
+        // 1. создаем объект
+        Car car = new Car("KIA RIO", "седан", "12312313");
+        // 2. сериализуем
+
+        byte[] buffer;
+
+        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(bos)) {
+
+            os.writeObject(car);
+            buffer = bos.toByteArray();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        try (ObjectInputStream is = new ObjectInputStream(new ByteArrayInputStream(buffer))) {
+            Car car1 = (Car) is.readObject();
+            System.out.println(car1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

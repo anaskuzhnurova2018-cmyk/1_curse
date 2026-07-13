@@ -1,0 +1,2 @@
+//сериализация объекта
+ObjectInputStream / ObjectOutputStream - берется объект и раскладывается на байты
